@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import next.controller.AddAnswerController;
+import next.controller.ListApiController;
 import next.controller.ListController;
 import next.controller.SaveController;
 import next.controller.ShowController;
@@ -23,6 +24,7 @@ public class RequestMapping {
 		
 		// FOR API
 		mappings.put("/api/addanswer.next", new AddAnswerController());
+		mappings.put("/api/list.next", new ListApiController());
 		
 		logger.info("Initialized Mapping Completed!");
 	}
