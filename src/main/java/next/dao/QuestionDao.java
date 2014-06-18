@@ -114,7 +114,6 @@ public class QuestionDao {
 	public void addCountOfComment(long questionId) throws SQLException{
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		int result;
 
 		try {
 			con = ConnectionManager.getConnection();
@@ -123,7 +122,7 @@ public class QuestionDao {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, questionId);
 
-			result = pstmt.executeUpdate();
+			pstmt.executeUpdate();
 
 			return;
 		} finally {
