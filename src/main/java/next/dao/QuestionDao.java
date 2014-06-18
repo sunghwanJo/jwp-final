@@ -23,7 +23,8 @@ public class QuestionDao {
 			pstmt.setString(1, question.getWriter());
 			pstmt.setString(2, question.getTitle());
 			pstmt.setString(3, question.getContents());
-			pstmt.setTimestamp(4, new Timestamp(question.getTimeFromCreateDate()));
+			pstmt.setTimestamp(4,
+					new Timestamp(question.getTimeFromCreateDate()));
 			pstmt.setInt(5, question.getCountOfComment());
 
 			pstmt.executeUpdate();
@@ -35,7 +36,7 @@ public class QuestionDao {
 			if (con != null) {
 				con.close();
 			}
-		}		
+		}
 	}
 
 	public List<Question> findAll() throws SQLException {
@@ -44,8 +45,8 @@ public class QuestionDao {
 		ResultSet rs = null;
 		try {
 			con = ConnectionManager.getConnection();
-			String sql = "SELECT questionId, writer, title, createdDate, countOfComment FROM QUESTIONS " + 
-					"order by questionId desc";
+			String sql = "SELECT questionId, writer, title, createdDate, countOfComment FROM QUESTIONS "
+					+ "order by questionId desc";
 			pstmt = con.prepareStatement(sql);
 
 			rs = pstmt.executeQuery();
@@ -53,11 +54,8 @@ public class QuestionDao {
 			List<Question> questions = new ArrayList<Question>();
 			Question question = null;
 			while (rs.next()) {
-				question = new Question(
-						rs.getLong("questionId"),
-						rs.getString("writer"),
-						rs.getString("title"),
-						null,
+				question = new Question(rs.getLong("questionId"),
+						rs.getString("writer"), rs.getString("title"), null,
 						rs.getTimestamp("createdDate"),
 						rs.getInt("countOfComment"));
 				questions.add(question);
@@ -83,8 +81,8 @@ public class QuestionDao {
 		ResultSet rs = null;
 		try {
 			con = ConnectionManager.getConnection();
-			String sql = "SELECT questionId, writer, title, contents, createdDate, countOfComment FROM QUESTIONS " + 
-					"WHERE questionId = ?";
+			String sql = "SELECT questionId, writer, title, contents, createdDate, countOfComment FROM QUESTIONS "
+					+ "WHERE questionId = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, questionId);
 
@@ -92,10 +90,8 @@ public class QuestionDao {
 
 			Question question = null;
 			if (rs.next()) {
-				question = new Question(
-						rs.getLong("questionId"),
-						rs.getString("writer"),
-						rs.getString("title"),
+				question = new Question(rs.getLong("questionId"),
+						rs.getString("writer"), rs.getString("title"),
 						rs.getString("contents"),
 						rs.getTimestamp("createdDate"),
 						rs.getInt("countOfComment"));
@@ -106,6 +102,31 @@ public class QuestionDao {
 			if (rs != null) {
 				rs.close();
 			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+	}
+
+	public void addCountOfComment(long questionId) throws SQLException{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result;
+
+		try {
+			con = ConnectionManager.getConnection();
+			String sql = "UPDATE QUESTIONS SET countOfComment=countOfComment+1 WHERE questionId = ?";
+			//update counter set count=count+1
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, questionId);
+
+			result = pstmt.executeUpdate();
+
+			return;
+		} finally {
 			if (pstmt != null) {
 				pstmt.close();
 			}
