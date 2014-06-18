@@ -1,7 +1,5 @@
 package next.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,14 +8,15 @@ import next.model.Question;
 import core.mvc.Controller;
 
 public class SaveController implements Controller {
-	private QuestionDao questionDao = new QuestionDao();
-	private List<Question> questions;
+	private QuestionDao questionDao;
 
 	@Override
 	public String execute(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String writer, title, contents;
-
+		
+		questionDao = new QuestionDao();
+		
 		writer = request.getParameter("writer");
 		title = request.getParameter("title");
 		contents = request.getParameter("contents");
